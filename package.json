@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Deven-14/utsav-google-apps-script/issues"
   },
-  "homepage": "https://github.com/Deven-14/utsav-google-apps-script#readme"
+  "homepage": "https://github.com/Deven-14/utsav-google-apps-script#readme",
+  "dependencies": {
+    "@types/google-apps-script": "^1.0.62"
+  }
 }

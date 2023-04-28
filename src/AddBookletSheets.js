@@ -6,7 +6,7 @@ function getColumn(activeSheet, columnIndex) {
 }
 
 
-function addBookletSheet(dept, booklet) {
+function addBookletSheet(booklet) {
 
 
     const spreadsheet = SpreadsheetApp.openById(booklet.spreadsheetId);
@@ -17,7 +17,7 @@ function addBookletSheet(dept, booklet) {
     sheets.forEach(sheet => existingBookletSheets.add(sheet.getName()));
 
 
-    const allBooklets = getColumn(SpreadsheetApp.getActiveSpreadsheet().getSheetByName(dept), 1);
+    const allBooklets = getColumn(SpreadsheetApp.openById(booklet.bookletsTracker).getSheetByName("Sheet1"), 1);
 
 
     const newBooklets = allBooklets.filter(booklet => !existingBookletSheets.has(booklet));
@@ -26,56 +26,53 @@ function addBookletSheet(dept, booklet) {
     const { spreadsheetId, range, taxnIdCol } = booklet.registrations;
     newBooklets.forEach(booklet => {
         let sheet = spreadsheet.insertSheet(booklet);
-        let formula = `=QUERY(IMPORTRANGE(${spreadsheetId}, ${range}), "select * where Col${taxnIdCol} like 'pass-${booklet}-%'")`
+        let formula = `=QUERY(IMPORTRANGE("${spreadsheetId}", "${range}"), "select * where Col${taxnIdCol} like 'pass-${booklet}-%'")`
         sheet.appendRow([formula]);
     });
 
-
-    Logger.log(dept + " new booklets");
-    Logger.log(newBooklets);
-
+    console.log(newBooklets);
 
 }
 
 
-const booklets = {
-    "Campaigning": {
-        spreadsheetId: "1SVmMCNhPsVGggK7cDFFvjSTuXO1xu6V-20gYgzUa_KQ",
+function AddCampainingBooklet(e) {
+
+    const campainingBooklet = {
+        spreadsheetId: "1T24Xk_G5mFBo-Tc5U7wKVwh5kIFgsakyKrLAccT2D-4",
+        bookletsTracker: "1gPQDzSkFdQ8dYidrKmBB4l838ioCjj4DbA2L8c0RlsI",
         registrations: {
-            spreadsheetId: "1leHpgRgo9sPijFk11-phEYu5XG25qmLTmLA7S_rJsEc",
+            spreadsheetId: "1SgYXOdSoiANVHAgEwWsPTKaFu_KoUwOUtsN9LYfzCmo",
             range: "Sheet1!A:Z",
             taxnIdCol: 2
         }
-    },
-    "Merch": {
-        spreadsheetId: "1JLU6ffY-oe4JRxhAdyo2cutlylo-yndG9zZ4NflRQw0",
+    }
+
+    addBookletSheet(campainingBooklet)
+
+    console.log("Campaining - new booklets");
+
+}
+
+
+function AddMerchBooklet(e) {
+
+    const merchBooklet = {
+        spreadsheetId: "1T24Xk_G5mFBo-Tc5U7wKVwh5kIFgsakyKrLAccT2D-4",
+        bookletsTracker: "1gPQDzSkFdQ8dYidrKmBB4l838ioCjj4DbA2L8c0RlsI",
         registrations: {
-            spreadsheetId: "15Yr92IgvBzg_ne2H0BkVBKVCljlz3GW4vFj8_5iWqqQ",
+            spreadsheetId: "1SgYXOdSoiANVHAgEwWsPTKaFu_KoUwOUtsN9LYfzCmo",
             range: "Sheet1!A:Z",
-            taxnIdCol: 1
+            taxnIdCol: 2
         }
     }
+
+    addBookletSheet(merchBooklet)
+
 }
 
 
 
-
-function onChange(e) {
-
-
-    // google bug, so won't work
-
-
-    // const activeSheet = e.getActiveSheet();
-    // const sheetName = activeSheet.getName();
-    // const booklet = booklets[sheetName];
-    // addBookletSheet(booklet);
-
-
-    // work around
-    for (let dept in booklets) {
-        addBookletSheet(dept, booklets[dept]);
-    }
-
-
+function CampainingBookletTrigger() {
+    const ss = SpreadsheetApp.openById("1gPQDzSkFdQ8dYidrKmBB4l838ioCjj4DbA2L8c0RlsI")
+    ScriptApp.newTrigger("AddCampainingBooklet").forSpreadsheet(ss).onChange().create();    
 }

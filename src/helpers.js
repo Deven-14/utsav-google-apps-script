@@ -1,4 +1,4 @@
-function myFunction() {
+function getFolderNames() {
     const folders = DriveApp.getFolderById("1Wl_5fnDHlj-K_-qJlPywRjCyCh9_WuNZ").getFolders();
     const clubIds = [];
     while (folders.hasNext()) {

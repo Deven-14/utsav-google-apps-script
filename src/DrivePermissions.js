@@ -102,13 +102,14 @@ function doGet(request) {
         res_status_code = addReadPermissions(fileId, emailIds);
 
 
-    } else if (operation == "ReloadAttendance") {
+    } 
+    // else if (operation == "ReloadAttendance") {
 
 
-        res_status_code = reloadAttendance()
+    //     res_status_code = reloadAttendance()
 
 
-    }
+    // }
 
     if (res_status_code == 200) {
         error = false;

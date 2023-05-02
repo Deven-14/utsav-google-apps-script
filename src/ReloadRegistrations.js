@@ -13,6 +13,8 @@ function reloadRegistrations() { // acts as main function
     // Logger.log(rows);
     addRowsToMainSheet(rows);
 
+    console.log("done reloadRegistrations");
+
 
 }
 
@@ -22,7 +24,7 @@ function reloadRegistrations() { // acts as main function
 function getRegistrations(token) {
 
 
-    const url = `https://backend.phaseshift.in/r/registrations`;
+    const url = `https://backend.bmsutsav.in/r/registrations`;
     const params = {
         method: 'post',
         headers: {
@@ -42,7 +44,7 @@ function getRegistrations(token) {
 function getEvents(token) {
 
 
-    const url = `https://backend.phaseshift.in/api/getEventsSmall`;
+    const url = `https://backend.bmsutsav.in/api/getEventsSmall`;
     const params = {
         method: 'post',
         headers: {
@@ -118,7 +120,7 @@ function getRegistrationsAsRows(registrations, events) {
 function addRowsToMainSheet(rows) {
 
 
-    const MAIN_ALL_EVENTS_SSID = "1leHpgRgo9sPijFk11-phEYu5XG25qmLTmLA7S_rJsEc";
+    const MAIN_ALL_EVENTS_SSID = "1SgYXOdSoiANVHAgEwWsPTKaFu_KoUwOUtsN9LYfzCmo";
 
 
     const spreadsheet = SpreadsheetApp.openById(MAIN_ALL_EVENTS_SSID);
@@ -145,7 +147,6 @@ function addRowsToMainSheet(rows) {
 
 
 
-
-  // function addTriggers() {
-  //   ScriptApp.newTrigger("reloadRegistrations").timeBased().atHour(16).nearMinute(30).everyDays(1).create();
-  // }
+function ReloadRegistrationsTrigger() {
+    ScriptApp.newTrigger("reloadRegistrations").timeBased().everyHours(3).create();
+}

@@ -14,7 +14,7 @@ function getMerchRegistrations() {
 
 
     const token = "346433c5cdf018029041";
-    const url = `https://backend.phaseshift.in/merch/registrations`;
+    const url = `https://backend.bmsutsav.in/merch/registrations`;
     const params = {
         method: 'post',
         headers: {

@@ -24,7 +24,7 @@ function getAttendances() {
 
 
     const token = "346433c5cdf018029041";
-    const url = `https://backend.phaseshift.in/a/attendances`;
+    const url = `https://backend.bmsutsav.in/a/attendances`;
     const params = {
         method: 'post',
         headers: {

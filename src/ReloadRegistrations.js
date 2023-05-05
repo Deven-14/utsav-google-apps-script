@@ -5,7 +5,18 @@ function ReloadRegistrations() { // acts as main function
     const eventsSmall = fetchDataFromBackendUrl("https://backend.bmsutsav.in/api/getEventsSmall");
     const events = convertEventsSmallToEvents(eventsSmall);
 
-    const headers = ["Event ID", "Ticket ID", "Campaigner Email", "Event Name", "Amount", "Participant Name", "Participant Email", "Participant Phone", "Participant College", "TIMESTAMP"];
+    const headers = [
+        "Event ID", 
+        "Ticket ID", 
+        "Campaigner Email", 
+        "Event Name", 
+        "Amount", 
+        "Participant Name", 
+        "Participant Email", 
+        "Participant Phone", 
+        "Participant College", 
+        "TIMESTAMP"
+    ];
     const rows = getRegistrationsAsRows(registrations, events);
 
     addToSpreadsheet("1SgYXOdSoiANVHAgEwWsPTKaFu_KoUwOUtsN9LYfzCmo", "Sheet1", headers, rows);

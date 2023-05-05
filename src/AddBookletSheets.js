@@ -57,16 +57,18 @@ function AddCampainingBooklet(e) {
 function AddMerchBooklet(e) {
 
     const merchBooklet = {
-        spreadsheetId: "1T24Xk_G5mFBo-Tc5U7wKVwh5kIFgsakyKrLAccT2D-4",
-        bookletsTracker: "1gPQDzSkFdQ8dYidrKmBB4l838ioCjj4DbA2L8c0RlsI",
+        spreadsheetId: "1YiOK6kdkomjJgi4bSq07qRE88_5-S3p-Suj8OGUXjnw",
+        bookletsTracker: "1GikLW2I6ULRih3JUR3HA9-_DdN3TQsbs_zJEjvmo5eI",
         registrations: {
-            spreadsheetId: "1SgYXOdSoiANVHAgEwWsPTKaFu_KoUwOUtsN9LYfzCmo",
+            spreadsheetId: "14Xa6FHSybrf6mR-BmiGmtjil70gtQ1j4y2cnkpAw3yc",
             range: "Sheet1!A:Z",
-            taxnIdCol: 2
+            taxnIdCol: 1
         }
     }
 
-    addBookletSheet(merchBooklet)
+    addBookletSheet(merchBooklet);
+
+    console.log("Merch - new booklets");
 
 }
 
@@ -75,4 +77,10 @@ function AddMerchBooklet(e) {
 function CampainingBookletTrigger() {
     const ss = SpreadsheetApp.openById("1gPQDzSkFdQ8dYidrKmBB4l838ioCjj4DbA2L8c0RlsI")
     ScriptApp.newTrigger("AddCampainingBooklet").forSpreadsheet(ss).onChange().create();    
+}
+
+
+function MerchBookletTrigger() {
+    const bookletTrackerSSID = "1GikLW2I6ULRih3JUR3HA9-_DdN3TQsbs_zJEjvmo5eI";
+    ScriptApp.newTrigger("AddMerchBooklet").forSpreadsheet(bookletTrackerSSID).onChange().create();    
 }

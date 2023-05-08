@@ -8,7 +8,8 @@ function ReloadMerchRegistrations() { // MAIN function
         "Amount", 
         "Name", 
         "Email", 
-        "Phone", 
+        "Phone",
+        "Color",
         "College",
         "Type",
         "Sizes",
@@ -36,10 +37,11 @@ function getMerchRegistrationsAsRows(registrations) {
             registration.name,
             registration.email,
             registration.phone,
+            registration.color.join(","),
             registration.college,
             registration.type,
             registration.sizes.join(","),
-            registration.updatedAt
+            formatDate(registration.updatedAt)
         ]);
 
     }

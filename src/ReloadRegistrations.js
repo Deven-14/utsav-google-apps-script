@@ -65,7 +65,7 @@ function getRegistrationsAsRows(registrations, events) {
             registration.email,
             registration.phone,
             registration.college,
-            registration.updatedAt
+            formatDate(registration.updatedAt)
         ]);
 
     }

@@ -1,7 +1,7 @@
 
 function formatDate(date) {
     d = new Date(date);
-    return d.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' })
+    return d.toLocaleString('en-US', { timeZone: 'Asia/Kolkata', hourCycle: 'h12'  })
 }
 
 function fetchDataFromBackendUrl(url) {
@@ -33,7 +33,7 @@ function addValuesToSheet(sheet, values) {
 
     const lastRow = sheet.getLastRow();
     if(lastRow != 0) {
-        sheet.getRange(2, 1, lastRow, values[0].length).clear();
+        sheet.getRange(2, 1, lastRow, values[0].length).deleteCells(SpreadsheetApp.Dimension.ROWS);
     }
 
     range.setValues(values);

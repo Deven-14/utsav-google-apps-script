@@ -50,8 +50,8 @@ function getAttendancesAsRows(attendances) {
             row.push(participant.email);
         }
 
-        row.concat(Array(MAX_ARRAY_LENGHT - row.length).fill(""));
-        rows.push(row);        
+        let newRow = row.concat(Array(MAX_ARRAY_LENGHT - row.length).fill(""));
+        rows.push(newRow);        
 
     }
     return rows;

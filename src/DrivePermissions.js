@@ -103,13 +103,11 @@ function doGet(request) {
 
 
     } 
-    // else if (operation == "ReloadAttendance") {
+    else if (operation == "ReloadAttendance") {
 
+        res_status_code = ReloadAttendance()
 
-    //     res_status_code = reloadAttendance()
-
-
-    // }
+    }
 
     if (res_status_code == 200) {
         error = false;

@@ -1,51 +1,42 @@
-function reloadAttendance() { // MAIN function
+function ReloadAttendance() { // MAIN function
 
     var responseCode = 200;
     try {
 
-
-        const attendances = getAttendances();
+        const attendances = fetchDataFromBackendUrl("https://backend.bmsutsav.in/a/attendances");
         const attendances_rows = getAttendancesAsRows(attendances);
-        addRowsToAttendanceSheet(attendances_rows);
-
+        const headers = getAttendanceSheetHeaders();
+        addToSpreadsheet("1SgYXOdSoiANVHAgEwWsPTKaFu_KoUwOUtsN9LYfzCmo", "Attendance", headers, attendances_rows);
 
     } catch (error) {
         responseCode = 400;
     }
     return responseCode;
 
-
 }
 
 
+function getAttendanceSheetHeaders() {
 
-
-function getAttendances() {
-
-
-    const token = "346433c5cdf018029041";
-    const url = `https://backend.bmsutsav.in/a/attendances`;
-    const params = {
-        method: 'post',
-        headers: {
-            Authorization: 'Bearer ' + token,
-        }
-    };
-    const response = UrlFetchApp.fetch(url, params);
-
-
-    // Logger.log(JSON.parse(response.getContentText()));
-    return JSON.parse(response.getContentText());
-
+    const headers = [
+        "Event ID",
+        "Ticket ID",
+        "Campaigner Email",
+    ];
+    const MAX_PARTICIPANTS_PER_TEAM = 15; // * Mannualy set this value
+    for (let i = 0; i < MAX_PARTICIPANTS_PER_TEAM; i++) {
+        headers.push(`Participant ${i+1} Name`);
+        headers.push(`Participant ${i+1} Email`);
+    }
+    return headers;
 
 }
-
-
 
 
 function getAttendancesAsRows(attendances) {
 
-
+    const MAX_PARTICIPANTS_PER_TEAM = 15; // * Mannualy set this value
+    const MAX_ARRAY_LENGHT = 3 + MAX_PARTICIPANTS_PER_TEAM * 2;
     const rows = [];
     for (let attendance of attendances) {
 
@@ -54,63 +45,40 @@ function getAttendancesAsRows(attendances) {
         row.push(attendance.taxnId);
         row.push(attendance.loginEmail);
 
-
         for (let participant of attendance.participants) {
             row.push(participant.name);
             row.push(participant.email);
         }
 
-
-        rows.push(row);
-
+        row.concat(Array(MAX_ARRAY_LENGHT - row.length).fill(""));
+        rows.push(row);        
 
     }
     return rows;
 
+}
 
+function ReloadAttendanceTrigger() {
+    ScriptApp.newTrigger("ReloadAttendance").timeBased().everyHours(3).create();
 }
 
 
-
-
-function addRowsToAttendanceSheet(rows) {
-
-
-    const MAIN_ALL_EVENTS_SSID = "1leHpgRgo9sPijFk11-phEYu5XG25qmLTmLA7S_rJsEc";
-    const range = "Attendance!A:Z";
-
-
-    Sheets.Spreadsheets.Values.clear(
-        {},
-        MAIN_ALL_EVENTS_SSID,
-        range
-    );
-
-
-
-    const resource = {
-        range: range,
-        majorDimension: "ROWS",
-        values: rows
-    };
-
-
-    const otherArguments = {
-        valueInputOption: "USER_ENTERED"
-    };
-
-    // use update instead of append vvvviiimmmpppp.... or else rows increases drastically and the sheet gets stuck
-    Sheets.Spreadsheets.Values.update(
-        resource,
-        MAIN_ALL_EVENTS_SSID,
-        range,
-        otherArguments
-    );
-
+function ChangeAttendanceFormula() {
+    const registrationsFolder = DriveApp.getFolderById("1hnP1gibt8sU6L8pN7jwWvL7ehjdYZapT");
+    const folders = registrationsFolder.getFolders();
+    while (folders.hasNext()) {
+        let clubFolder = folders.next();
+        let files = clubFolder.getFiles();
+        while (files.hasNext()) {
+            let file = files.next();
+            let sheet = SpreadsheetApp.openById(file.getId()).getSheetByName("Attendance");
+            let range = sheet.getRange(1, 1);
+            let formula = range.getFormula();
+            let newFormula = formula.replace("A:Z", "A:AG");
+            range.setFormula(newFormula);
+            console.log("done - ", file.getName());
+        }
+        console.log("done - ", clubFolder.getName());
+    }
 
 }
-
-
-  // function addTriggers() {
-  //   ScriptApp.newTrigger("reloadAttendance").timeBased().atHour(16).nearMinute(30).everyDays(1).create();
-  // }

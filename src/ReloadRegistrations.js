@@ -52,7 +52,8 @@ function getRegistrationsAsRows(registrations, events) {
             eventName = events[registration.eventId].eventName;
         } catch (error) {
             Logger.log("scrapped eventId " + registration.eventId);
-            throw error;
+            eventName = "DELETED EVENT";
+            // ! NOT THROWING AN ERROR HERE
         }
 
         rows.push([
